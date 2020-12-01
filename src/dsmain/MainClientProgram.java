@@ -23,7 +23,14 @@ public class MainClientProgram {
 	// ArrayList<MainClientProgram> voterList;
 
 	public MainClientProgram(String name) {
-		int port = new Random().nextInt(1000)+5000;
+		int port;
+		if(name.equals("A")) {
+			port = 5555;
+		}
+		else {
+			port = 5556;
+		}
+
 
 		try {
 			
@@ -42,7 +49,7 @@ public class MainClientProgram {
 			}
 			else 
 			{
-				ClientComInterface ComI = (ClientComInterface) Naming.lookup("A");
+				ClientComInterface ComI = (ClientComInterface) Naming.lookup("rmi://localhost:" + "5555" + "/A");
 				ComI.testCom("fuck");
 				
 			}
