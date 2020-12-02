@@ -6,16 +6,19 @@ import java.util.Date;
 public class Block {
 	public String hash;
 	public String previousHash;
+	private long timeStamp;
 	private String data;
 	private String voting_info;
+	public  int numOfSelection;
 	private ArrayList<String> voting_options;
 	
-	private long timeStamp;
 	// Constructor for first block
-	public Block( String data,String voting_info) {
+	public Block(String data,String voting_info,int numOfSelection, ArrayList<String> voting_options) {
 		this.data=data;
+		this.numOfSelection= numOfSelection;
 		this.voting_info=voting_info;
 		this.voting_options= new ArrayList<String>();
+		this.timeStamp = new Date().getTime();
 		this.hash = calculateHash();
 		
 	}
@@ -26,6 +29,8 @@ public class Block {
 		this.timeStamp = new Date().getTime();
 		this.hash = calculateHash();
 	}
+	
+	
 	public String calculateHash() {
 		String calculatedhash = StringUtil.applySha256( 
 				previousHash +
@@ -35,14 +40,9 @@ public class Block {
 		return calculatedhash;
 	}
 	
+	
+	
 	public static void main(String[]args) {
-		Block genesis= new Block("I am the first","0");
-		System.out.println("Hash for block 1 : "+ genesis.hash);
 		
-		Block second= new Block("I am the second",genesis.hash);
-		System.out.println("Hash for block 2 : "+ second.hash);
-		
-		Block third= new Block("I am the third", second.hash);
-		System.out.println("Hash for block 3 : "+ third.hash);
 	}
 }
