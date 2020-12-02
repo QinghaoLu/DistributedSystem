@@ -47,7 +47,7 @@ public class RegisterClass {
 					String lPasswd = scanner.nextLine();
 					boolean lSucess = fi.loginfunc(lUsername, lPasswd, ipaddr, portNum);
 					if (lSucess) {
-
+						scanner.close();
 						System.out.println("Log in success.");
 						userInfo = new UserInfo(lUsername, lPasswd, ipaddr, portNum);
 						return userInfo;
@@ -65,7 +65,7 @@ public class RegisterClass {
 		} catch (Exception e) {
 			System.out.println("Something going wrong. ");
 		}
-		scanner.close();
+
 		return null;
 
 	}
