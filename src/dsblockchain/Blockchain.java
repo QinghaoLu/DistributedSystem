@@ -1,8 +1,13 @@
 package dsblockchain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Blockchain {
+public class Blockchain implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String voting_info;
 	private  int numOfSelection;
 	private ArrayList<String> voting_options;
