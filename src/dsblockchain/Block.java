@@ -10,9 +10,7 @@ public class Block {
 	private String user;
 	private String data;
 
-	
 
-	//constructor for the following block
 	public Block( String user,String data,String previousHash) {
 		this.user =user;
 		this.data = data;
