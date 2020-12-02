@@ -1,14 +1,26 @@
 package dsblockchain;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Block {
 	public String hash;
 	public String previousHash;
 	private String data;
-	private long timeStamp;
+	private String voting_info;
+	private ArrayList<String> voting_options;
 	
-	public Block(String data,String previousHash ) {
+	private long timeStamp;
+	// Constructor for first block
+	public Block( String data,String voting_info) {
+		this.data=data;
+		this.voting_info=voting_info;
+		this.voting_options= new ArrayList<String>();
+		this.hash = calculateHash();
+		
+	}
+	//constructor for the following block
+	public Block(String data,String previousHash,String option) {
 		this.data = data;
 		this.previousHash = previousHash;
 		this.timeStamp = new Date().getTime();
