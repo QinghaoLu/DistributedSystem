@@ -19,6 +19,7 @@ public class Blockchain {
 	
 	public void addBlock(Block b) {
 		this.blockchain.add(b);
+		
 	}
 	
 	public boolean verifyUser(String user) {
