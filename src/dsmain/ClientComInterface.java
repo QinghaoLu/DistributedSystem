@@ -11,7 +11,7 @@ public interface ClientComInterface extends Remote {
     
     // ArrayList<Block> getUpdate() throws RemoteException;
     
-    // String requestVote(Block b) throws RemoteException;
+    void requestVote(Integer ChainId, String name, int clockValue) throws RemoteException;
     
     public void testCom(String message) throws RemoteException;
 
