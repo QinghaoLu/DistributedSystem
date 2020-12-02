@@ -7,23 +7,14 @@ public class Block {
 	public String hash;
 	public String previousHash;
 	private long timeStamp;
+	private String user;
 	private String data;
-	private String voting_info;
-	public  int numOfSelection;
-	private ArrayList<String> voting_options;
+
 	
-	// Constructor for first block
-	public Block(String data,String voting_info,int numOfSelection, ArrayList<String> voting_options) {
-		this.data=data;
-		this.numOfSelection= numOfSelection;
-		this.voting_info=voting_info;
-		this.voting_options= new ArrayList<String>();
-		this.timeStamp = new Date().getTime();
-		this.hash = calculateHash();
-		
-	}
+
 	//constructor for the following block
-	public Block(String data,String previousHash,String option) {
+	public Block( String user,String data,String previousHash) {
+		this.user =user;
 		this.data = data;
 		this.previousHash = previousHash;
 		this.timeStamp = new Date().getTime();
@@ -35,11 +26,14 @@ public class Block {
 		String calculatedhash = StringUtil.applySha256( 
 				previousHash +
 				Long.toString(timeStamp) + 
+				user+
 				data 
 				);
 		return calculatedhash;
 	}
-	
+	public String getUser() {
+		return this.user;
+	}
 	
 	
 	public static void main(String[]args) {
