@@ -21,7 +21,7 @@ public class Blockchain {
 		this.blockchain.add(b);
 	}
 	
-	public boolean checkUser(String user) {
+	public boolean verifyUser(String user) {
 		boolean hasVoted=false;
 		for(int i=0;i<this.blockchain.size();i++) {
 			if(user.equals(this.blockchain.get(i).getUser())) {
