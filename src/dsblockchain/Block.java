@@ -9,11 +9,12 @@ public class Block {
 	private long timeStamp;
 	private String user;
 	private String data;
+	private int [] selection;
 
-
-	public Block( String user,String data,String previousHash) {
-		this.user =user;
+	public Block( String user,String data,String previousHash,int [] selection) {
+		this.user = user;
 		this.data = data;
+		this.selection= selection;
 		this.previousHash = previousHash;
 		this.timeStamp = new Date().getTime();
 		this.hash = calculateHash();
@@ -33,8 +34,9 @@ public class Block {
 		return this.user;
 	}
 	
-	
-	public static void main(String[]args) {
-		
+	public int [] getSelection() {
+		return this.selection;
 	}
+	
+	
 }
