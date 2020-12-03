@@ -4,6 +4,9 @@ import java.io.*;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.util.Scanner;
+
+import dsserver.directoryInterface;
+
 import java.net.InetAddress;
 
 public class RegisterClass {
@@ -12,17 +15,17 @@ public class RegisterClass {
 //		registration("hello");
 //	}
 
-	public static UserInfo registration(String portNum) {
+	public static UserInfo registration(String portNum,Scanner scanner) {
 
-		Scanner scanner = new Scanner(System.in);
 		try {
-			Registry regist = LocateRegistry.getRegistry();
-			directoryInterface fi = (directoryInterface) regist.lookup("directoryInterface");
+			// Registry regist = LocateRegistry.getRegistry();
+			directoryInterface fi = (directoryInterface) Naming.lookup("//192.168.0.64:5555/directoryInterface");
 			String ipaddr;
 			ipaddr = InetAddress.getLocalHost().toString();
 			UserInfo userInfo;
-
+			System.out.println("Server Conntection Established");
 			while (true) {
+				
 				System.out.println("Enter 1 to register, enter 2 to log in");
 
 				String check = scanner.nextLine();
@@ -47,7 +50,7 @@ public class RegisterClass {
 					String lPasswd = scanner.nextLine();
 					boolean lSucess = fi.loginfunc(lUsername, lPasswd, ipaddr, portNum);
 					if (lSucess) {
-						scanner.close();
+						// scanner.close();
 						System.out.println("Log in success.");
 						userInfo = new UserInfo(lUsername, lPasswd, ipaddr, portNum);
 						return userInfo;
@@ -63,7 +66,8 @@ public class RegisterClass {
 
 			}
 		} catch (Exception e) {
-			System.out.println("Something going wrong. ");
+			// System.out.println("Connection Failed to Directiory Server ");
+			e.printStackTrace();
 		}
 
 		return null;

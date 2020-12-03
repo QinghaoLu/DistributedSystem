@@ -37,7 +37,6 @@ public class directoryImp implements directoryInterface{
 
 	@Override
 	public boolean loginfunc(String name, String passwd, String ipaddr, String portNum) throws RemoteException {
-		// TODO Auto-generated method stub
 		
 		for(int i=0; i<users.size();i++) {
 			if(users.get(i).name.equals(name) && users.get(i).passwd.equals(passwd)) {
@@ -55,7 +54,6 @@ public class directoryImp implements directoryInterface{
 	@Override
 	public ArrayList<String> peerAddress(String name, String passwd, String ipaddr, String portNum)
 			throws RemoteException {
-		// TODO Auto-generated method stub
 		
 		ArrayList<String> peerlist=new ArrayList<String>();
 		
