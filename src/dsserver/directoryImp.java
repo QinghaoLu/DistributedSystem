@@ -67,7 +67,7 @@ public class directoryImp implements directoryInterface{
 				
 				for(int j=0;j<users.size();j++) {
 					if(j!=i)
-						peerlist.add(users.get(j).addr);
+						peerlist.add("//"+users.get(j).addr+":"+users.get(j).port+"/"+users.get(j).name);
 				}
 				return peerlist;
 				
