@@ -60,6 +60,7 @@ public class UI implements Runnable {
 
 
             }
+            // VOTE SECTION
             if (seleted.equals("2")) {
                 clear();
                 System.out.println(".............<Vote>.............");

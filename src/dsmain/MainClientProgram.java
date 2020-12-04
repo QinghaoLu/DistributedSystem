@@ -137,7 +137,16 @@ public class MainClientProgram {
 			}
 		}
 		getPolls();
-		me.chains.get(chainID).addBlock(user.name," ",selection);
+		me.chains.get(chainID).addBlock(user.name,user.addr,selection);
+		for(int i = 0; i < peers.size(); i++){
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
+				peer.UpdateChain(chainID,me.chains.get(chainID));
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				e.printStackTrace();
+			}
+		}
+		me.tokens = "Releasd";
 
 	}
 
