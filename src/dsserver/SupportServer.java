@@ -18,6 +18,7 @@ public class SupportServer {
 	 */
 	public static void main(String[] args) {
 		System.setProperty("java.rmi.server.hostname", "192.168.0.31");
+		
 		try{
 			
 			directoryInterface fi=new directoryImp("directoryServer");
