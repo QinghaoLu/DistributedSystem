@@ -261,7 +261,7 @@ public class MainClientProgram {
 		private void requestVote(){
 			System.out.println(peerinfo);
 			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
 				peer.requestVote(chainID, user.name, me.clock.getValue());
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				// e.printStackTrace();
