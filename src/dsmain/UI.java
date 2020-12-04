@@ -51,7 +51,6 @@ public class UI implements Runnable {
                 if(confirm()){
                     owner.createChain(chain);
                     System.out.println("Vote Created!");
-                    
                 }  
                 else{
                     System.out.println("Vote Canceled!");

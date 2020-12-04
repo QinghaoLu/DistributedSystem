@@ -21,7 +21,8 @@ public class RegisterClass {
 			// Registry regist = LocateRegistry.getRegistry();
 			directoryInterface fi = (directoryInterface) Naming.lookup("//192.168.0.31:5555/directoryInterface");
 			String ipaddr;
-			ipaddr = InetAddress.getLocalHost().toString();
+			ipaddr = InetAddress.getLocalHost().toString().split("/")[1];
+			System.out.println(ipaddr);
 			UserInfo userInfo;
 			System.out.println("Server Conntection Established");
 			while (true) {

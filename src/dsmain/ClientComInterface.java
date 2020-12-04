@@ -12,6 +12,8 @@ public interface ClientComInterface extends Remote {
 
     
     ArrayList<Blockchain> getUpdate() throws RemoteException;
+
+    void Update(ArrayList<Blockchain> chain) throws RemoteException;
     
     void requestVote(Integer ChainId, String name, int clockValue) throws RemoteException;
 

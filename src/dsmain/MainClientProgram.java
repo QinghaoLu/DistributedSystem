@@ -77,6 +77,7 @@ public class MainClientProgram {
 		me.tokens = "WantA";
 		updatePeers();
 		for(int i = 0; i < peers.size(); i++){
+			System.out.println(peers.get(i));
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
 				peer.requestaddChain(user.name, me.clock.getValue());
@@ -84,10 +85,20 @@ public class MainClientProgram {
 				e.printStackTrace();
 			}
 		}
+		getPolls();
 		me.chains.add(chain);
+		for(int i = 0; i < peers.size(); i++){
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
+				peer.Update(me.chains);
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				e.printStackTrace();
+			}
+		}
 		me.tokens = "Releasd";
 	}
 
+	// update peer list
 	public void updatePeers(){
 		try {
 			peers = dserver.peerAddress(user.name, user.passwd, user.addr, user.port);
@@ -95,10 +106,23 @@ public class MainClientProgram {
 			e1.printStackTrace();
 		}
 	}
-	public ArrayList<Blockchain> getPolls(){
-		return me.chains;
 
+
+	public ArrayList<Blockchain> getPolls(){
+		updatePeers();
+		for(int i = 0; i < peers.size(); i++){
+			System.out.println(peers.get(i));
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
+				me.chains = peer.getUpdate();
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return me.chains;
 	}
+
 	public static void main(String[] args) {
 		
 		Scanner scanner = new Scanner(System.in);

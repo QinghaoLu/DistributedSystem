@@ -110,6 +110,12 @@ public class ClientCom implements ClientComInterface {
 
     }
 
+    @Override
+    public void Update(ArrayList<Blockchain> chains) throws RemoteException {
+        this.chains = chains;
+
+    }
+
     
     
 }
