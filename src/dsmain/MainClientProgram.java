@@ -88,6 +88,7 @@ public class MainClientProgram {
 		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
 			pool.add(new Thread(new Multicast(peers.get(i),1)));
+			pool.get(i).start();
 		}
 		// wait for threads join
 		for (Thread i : pool) {
@@ -108,6 +109,7 @@ public class MainClientProgram {
 		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
 			pool.add(new Thread(new Multicast(peers.get(i),2)));
+			pool.get(i).start();
 		}
 		for (Thread i : pool) {
 			try {
@@ -124,6 +126,7 @@ public class MainClientProgram {
 		ArrayList<Thread> pool2 = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
 			pool2.add(new Thread(new Multicast(peers.get(i),3)));
+			pool2.get(i).start();
 		}
 		for (Thread i : pool2) {
 			try {
@@ -142,6 +145,7 @@ public class MainClientProgram {
 		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
 			pool.add(new Thread(new Multicast(peers.get(i),4,chainID)));
+			pool.get(i).start();
 		}
 		for (Thread i : pool) {
 			try {
@@ -156,18 +160,19 @@ public class MainClientProgram {
 		
 		me.chains.get(chainID).addBlock(user.name, user.addr, selection);
 
-		// ArrayList<Thread> pool2 = new ArrayList<Thread>();
-		// for (int i = 0; i < peers.size(); i++) {
-		// 	pool2.add(new Thread(new Multicast(peers.get(i),3)));
-		// }
-		// for (Thread i : pool2) {
-		// 	try {
-		// 		i.join();
-		// 	} catch (InterruptedException e) 
-		// 	{
-		// 		e.printStackTrace();
-		// 	}
-		// }
+		ArrayList<Thread> pool2 = new ArrayList<Thread>();
+		for (int i = 0; i < peers.size(); i++) {
+			pool2.add(new Thread(new Multicast(peers.get(i),3)));
+			pool2.get(i).start();
+		}
+		for (Thread i : pool2) {
+			try {
+				i.join();
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 		if(user.name.equals("mu")){
 			try {
 			Thread.sleep(10000);
