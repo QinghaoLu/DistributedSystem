@@ -19,7 +19,7 @@ public class RegisterClass {
 
 		try {
 			// Registry regist = LocateRegistry.getRegistry();
-			directoryInterface fi = (directoryInterface) Naming.lookup("//192.168.0.64:5555/directoryInterface");
+			directoryInterface fi = (directoryInterface) Naming.lookup("//192.168.0.31:5555/directoryInterface");
 			String ipaddr;
 			ipaddr = InetAddress.getLocalHost().toString();
 			UserInfo userInfo;

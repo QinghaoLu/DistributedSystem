@@ -40,6 +40,8 @@ public class MainClientProgram {
 					Integer.valueOf(user.port));
 			Registry reg = LocateRegistry.createRegistry(Integer.valueOf(user.port));
 			reg.bind(user.name, com);
+
+			System.out.println("Online connecting to Dserver...");
 			dserver = (directoryInterface) Naming.lookup("//192.168.0.31:5555/directoryInterface");
 			try {
 				Thread t = new Thread(new UI(this));
