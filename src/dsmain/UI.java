@@ -27,7 +27,7 @@ public class UI implements Runnable {
             System.out.println("Option 3: View Polls");
             String seleted = s.nextLine();
              
-
+            // Create A Poll
             if (seleted.equals("1")) {
                 clear();
                 System.out.println(".............<Create A New Poll>.............");
@@ -71,10 +71,31 @@ public class UI implements Runnable {
                 s.nextLine();
                 ArrayList<Blockchain> chain = owner.getPolls();
                 displayPoll(chain.get(selection));
-                System.out.println("Enter Your Vote");
-                s.nextLine();
+                
+                int index = 0;
+                for (String i : chain.get(selection).getVotingOptions()) {
+                    System.out.println("Option-"+index+": "+i);
+                }
+                if(chain.get(selection).verifyUser(owner.user.name)){
+                    System.out.println("You Already Voted!");
+                }
+                else{
+                    int numOfSelection = chain.get(selection).getNumOfSelection();
+                    int[] votes = new int[numOfSelection];
+                    System.out.println("You Can Make "+numOfSelection+" selections");
+                    for(int i = 0; i < numOfSelection; i++){
+                        System.out.println("Enter Your"+(i+1)+"Selection");
+                        votes[i] = s.nextInt();
+                        s.nextLine();
+                    }
+                    owner.vote(selection, votes);
+                    
+                }
+                
                 
             }
+
+            // Show Polls
             if (seleted.equals("3")) {
                 clear();
                 System.out.println(".............<Current Polls>.............");
@@ -113,8 +134,7 @@ public class UI implements Runnable {
             System.out.println("Poll number-"+(idex++)+": "+i.getVotingInfo());         
         }
     }
-
-
+    
     
     public void checkBack(){
         while(true){
