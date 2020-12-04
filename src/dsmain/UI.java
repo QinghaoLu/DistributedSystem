@@ -1,6 +1,5 @@
 package dsmain;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -33,7 +32,7 @@ public class UI implements Runnable {
                 System.out.println(".............<Create A New Poll>.............");
                 System.out.println("Enter Vote Information");
                 String info = s.nextLine();
-                System.out.println("How many options to vote");
+                System.out.println("How many vote options for voters to select");
                 int optionCount = s.nextInt();
                 s.nextLine();
                 ArrayList<String> voting_options = new ArrayList<String>();
@@ -43,7 +42,7 @@ public class UI implements Runnable {
                     voting_options.add(s.nextLine());
                     i++;
                 }
-                System.out.println("How many selections for voter");
+                System.out.println("How many votes allowed per voter");
                 int selectionCount = s.nextInt();
                
                 Blockchain chain = new Blockchain(info,selectionCount,voting_options,owner.user.name);
@@ -55,6 +54,7 @@ public class UI implements Runnable {
                 else{
                     System.out.println("Vote Canceled!");
                     clear();
+                    checkBack();
                 }
                     
 
@@ -66,32 +66,34 @@ public class UI implements Runnable {
                 System.out.println(".............<Vote>.............");
                 System.out.println("Polls List: ");
                 showPolls();
-                System.out.println("Select A Poll");
-                int selection = s.nextInt();
-                s.nextLine();
-                ArrayList<Blockchain> chain = owner.getPolls();
-                displayPoll(chain.get(selection));
-                
-                int index = 0;
-                for (String i : chain.get(selection).getVotingOptions()) {
-                    System.out.println("Option-"+index+": "+i);
-                }
-                if(chain.get(selection).verifyUser(owner.user.name)){
-                    System.out.println("You Already Voted!");
+                if(owner.getPolls().size() == 0){
+                    System.out.println("There are no polls");
+                    checkBack();
                 }
                 else{
-                    int numOfSelection = chain.get(selection).getNumOfSelection();
-                    int[] votes = new int[numOfSelection];
-                    System.out.println("You Can Make "+numOfSelection+" selections");
-                    for(int i = 0; i < numOfSelection; i++){
-                        System.out.println("Enter Your"+(i+1)+"Selection");
-                        votes[i] = s.nextInt();
-                        s.nextLine();
-                    }
-                    owner.vote(selection, votes);
+                    System.out.println("Select A Poll");
+                    int selection = s.nextInt();
+                    s.nextLine();
+                    ArrayList<Blockchain> chain = owner.getPolls();
+                    displayPoll(chain.get(selection));
                     
-                }
-                
+                    if(chain.get(selection).verifyUser(owner.user.name)){
+                        System.out.println("You Already Voted!");
+                        checkBack();
+                    }
+                    else{
+                        int numOfSelection = chain.get(selection).getNumOfSelection();
+                        int[] votes = new int[numOfSelection];
+
+                        for(int i = 0; i < numOfSelection; i++){
+                            System.out.println("Enter Your "+(i+1)+" Selection");
+                            votes[i] = s.nextInt();
+                            s.nextLine();
+                        }
+                        owner.vote(selection, votes);
+                        
+                    }
+                }   
                 
             }
 
@@ -100,7 +102,19 @@ public class UI implements Runnable {
                 clear();
                 System.out.println(".............<Current Polls>.............");
                 showPolls();
-                checkBack();
+                
+                if(owner.getPolls().size() == 0){
+                    System.out.println("There are no polls");
+                    checkBack();
+                }
+                else{
+                    System.out.println("Enter selection to view poll result");
+                    int selection = s.nextInt();
+                    s.nextLine();
+                    showPollResult(selection);
+                    checkBack();
+                }
+                
             }
             
             clear();
@@ -121,11 +135,12 @@ public class UI implements Runnable {
     }
     public void displayPoll(Blockchain c){
         System.out.println(c.getVotingInfo());
+        int idex = 0;
         for(String i : c.getVotingOptions()) {
-            System.out.println("Option: "+i);   
+            System.out.println("Option: "+(idex++)+": "+i);   
         }
 
-        System.out.println(c.getNumOfSelection()+"Selection Allowed");
+        System.out.println(c.getNumOfSelection()+" votes allowed");
        
     }
     public void showPolls(){
@@ -135,7 +150,15 @@ public class UI implements Runnable {
         }
     }
     
-    
+    public void showPollResult(int selection){
+
+        int index = 0;
+        for (String i: owner.getPolls().get(selection).getVotingOptions()) {
+            System.out.println(i+": ["+owner.getPolls().get(selection).getVotes()[index++]+"] votes");    
+        }
+        
+
+    }
     public void checkBack(){
         while(true){
             if(s.nextLine().equals("0"))

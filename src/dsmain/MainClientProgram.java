@@ -56,96 +56,104 @@ public class MainClientProgram {
 		}
 		System.out.println("You are on port:" + user.port);
 		// COM TEST//
-		
 
-		
 		// if (user.name.equals("tester2")) {
-		// 	me.tokens.add("Wanted");
-		// 	try {
-		// 		ClientComInterface testcom = (ClientComInterface) Naming.lookup("//192.168.0.64:5555/tester1");
-				
-		// 		testcom.requestVote(0, user.name, me.clockList.get(0).getValue());
-		// 		System.out.println("response recived");
-		// 	} catch (MalformedURLException | RemoteException | NotBoundException e) {
+		// me.tokens.add("Wanted");
+		// try {
+		// ClientComInterface testcom = (ClientComInterface)
+		// Naming.lookup("//192.168.0.64:5555/tester1");
 
-		// 		e.printStackTrace();
-		// 	}
+		// testcom.requestVote(0, user.name, me.clockList.get(0).getValue());
+		// System.out.println("response recived");
+		// } catch (MalformedURLException | RemoteException | NotBoundException e) {
+
+		// e.printStackTrace();
+		// }
 		// }
 
 	}
 
 	// update peer list
-	public void updatePeers(){
+	public void updatePeers() {
 		try {
 			peers = dserver.peerAddress(user.name, user.passwd, user.addr, user.port);
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}
 	}
-	
 
-	public ArrayList<Blockchain> getPolls(){
+	public ArrayList<Blockchain> getPolls() {
 		updatePeers();
-		for(int i = 0; i < peers.size(); i++){
+		for (int i = 0; i < peers.size(); i++) {
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				me.chains = peer.getUpdate();
+				if (peer.getUpdate().size() != 0)
+					me.chains = peer.getUpdate();
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
 		return me.chains;
 	}
 
-
-	public void createChain(Blockchain chain){
+	public void createChain(Blockchain chain) {
 		me.tokens = "WantA";
 		updatePeers();
-		for(int i = 0; i < peers.size(); i++){
+		for (int i = 0; i < peers.size(); i++) {
 			System.out.println(peers.get(i));
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
 				peer.requestaddChain(user.name, me.clock.getValue());
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 		getPolls();
 		me.chains.add(chain);
-		for(int i = 0; i < peers.size(); i++){
+		for (int i = 0; i < peers.size(); i++) {
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
 				peer.Update(me.chains);
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 		me.tokens = "Releasd";
 	}
 
-	public void vote(int chainID, int[] selection){
-		me.tokens = "WantV"+chainID;
+	public void vote(int chainID, int[] selection) {
+		me.tokens = "WantV" + chainID;
 		updatePeers();
-		for(int i = 0; i < peers.size(); i++){
+		for (int i = 0; i < peers.size(); i++) {
 			System.out.println(peers.get(i));
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.requestVote(chainID,user.name, me.clock.getValue());
+				peer.requestVote(chainID, user.name, me.clock.getValue());
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
+		me.tokens = "Held"+chainID;
 		getPolls();
-		me.chains.get(chainID).addBlock(user.name,user.addr,selection);
-		for(int i = 0; i < peers.size(); i++){
+		
+		me.chains.get(chainID).addBlock(user.name, user.addr, selection);
+		for (int i = 0; i < peers.size(); i++) {
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.UpdateChain(chainID,me.chains.get(chainID));
+				peer.UpdateChain(chainID, me.chains.get(chainID));
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				// e.printStackTrace();
+			}
+		}
+		if(user.name.equals("mu")){
+			try {
+			Thread.sleep(10000);
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		
 		me.tokens = "Releasd";
 
 	}

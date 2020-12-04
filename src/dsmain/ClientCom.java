@@ -33,7 +33,7 @@ public class ClientCom implements ClientComInterface {
             Quene.add(name);
             while ((tokens.equals("WantV"+ChainId) && clock.getValue() > clockValue)
                     || tokens.equals("Held"+ChainId)) {
-                System.out.println("someMofo Invoking me" + tokens);
+                System.out.println(name+" Wants to vote I'm "+tokens);
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
@@ -73,6 +73,12 @@ public class ClientCom implements ClientComInterface {
 
     @Override
     public ArrayList<Blockchain> getUpdate(){
+        for (Blockchain i : chains) {
+            if(!i.isChainValid()){
+                return new ArrayList<Blockchain>();
+            }
+
+        }
         return chains;
     }
 

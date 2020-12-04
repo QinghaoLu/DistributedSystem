@@ -49,21 +49,27 @@ public class Blockchain implements Serializable {
 		Block previousBlock;
 		
 		//loop through blockchain to check hashes:
-		for(int i=1; i < blockchain.size(); i++) {
-			currentBlock = blockchain.get(i);
-			previousBlock = blockchain.get(i-1);
-			//compare registered hash and calculated hash:
-			if(!currentBlock.hash.equals(currentBlock.calculateHash()) ){
-				System.out.println("Current Hashes not equal");			
-				return false;
+		if(this.blockchain.size() > 1){
+			for(int i=1; i >= blockchain.size(); i++) {
+				currentBlock = blockchain.get(i);
+				previousBlock = blockchain.get(i-1);
+				//compare registered hash and calculated hash:
+				if(!currentBlock.hash.equals(currentBlock.calculateHash()) ){
+					System.out.println("Current Hashes not equal");			
+					return false;
+				}
+				//compare previous hash and registered previous hash
+				if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
+					System.out.println("Previous Hashes not equal");
+					return false;
+				}
 			}
-			//compare previous hash and registered previous hash
-			if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
-				System.out.println("Previous Hashes not equal");
-				return false;
-			}
+			return true;
 		}
-		return true;
+		else{
+			return true;
+		}
+		
 	}
 	
 	public String getVotingInfo() {
@@ -79,7 +85,7 @@ public class Blockchain implements Serializable {
 	
 	
 	public int [] getVotes() {
-		int [] result = new int[this.numOfSelection];
+		int [] result = new int[voting_options.size()];
 		for(int i=1;i<this.blockchain.size();i++) {
 			for(int j=0;j<this.blockchain.get(i).getSelection().length;j++) {
 				result[this.blockchain.get(i).getSelection()[j]]++;
