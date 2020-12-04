@@ -40,7 +40,7 @@ public class MainClientProgram {
 					Integer.valueOf(user.port));
 			Registry reg = LocateRegistry.createRegistry(Integer.valueOf(user.port));
 			reg.bind(user.name, com);
-			dserver = (directoryInterface) Naming.lookup("//192.168.0.64:5555/directoryInterface");
+			dserver = (directoryInterface) Naming.lookup("//192.168.0.31:5555/directoryInterface");
 			try {
 				Thread t = new Thread(new UI(this));
 				t.start();
@@ -83,7 +83,6 @@ public class MainClientProgram {
 			}
 		}
 		me.chains.add(chain);
-		me.clock = new Clock();
 		me.tokens = "Releasd";
 	}
 
@@ -93,6 +92,10 @@ public class MainClientProgram {
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}
+	}
+	public ArrayList<Blockchain> getPolls(){
+		return me.chains;
+
 	}
 	public static void main(String[] args) {
 		

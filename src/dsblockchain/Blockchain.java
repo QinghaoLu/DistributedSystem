@@ -14,11 +14,11 @@ public class Blockchain implements Serializable {
 	private ArrayList<Block> blockchain;
 	
 	public Blockchain( String voting_info,int numOfSelection, ArrayList<String> voting_options,String hostUser) {
-		this.numOfSelection= numOfSelection;
-		this.voting_info=voting_info;
-		this.voting_options= new ArrayList<String>();
+		this.numOfSelection = numOfSelection;
+		this.voting_info =voting_info;
+		this.voting_options = voting_options;
 		this.blockchain=new ArrayList<Block>();
-		int [] empty= {-1};
+		int [] empty = {-1};
 		blockchain.add(new Block(hostUser,"initialdata","0",empty));
 		
 	}
@@ -27,6 +27,7 @@ public class Blockchain implements Serializable {
 		this.blockchain.add(b);
 		
 	}
+
 	public ArrayList<Block> getBlockchain() {
 		return this.blockchain;
 	}
