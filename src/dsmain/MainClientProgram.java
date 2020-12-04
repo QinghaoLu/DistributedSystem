@@ -114,7 +114,7 @@ public class MainClientProgram {
 		for (Thread i : pool) {
 			try {
 				i.join();
-			} catch (InterruptedException e) 
+			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
@@ -237,6 +237,7 @@ public class MainClientProgram {
 
 		private void updateChain() {
 			try {
+				// System.out.println(peerinfo);
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
 				if (peer.getUpdate().size() != 0)
 					me.chains = peer.getUpdate();

@@ -86,7 +86,7 @@ public class UI implements Runnable {
                         int[] votes = new int[numOfSelection];
 
                         for(int i = 0; i < numOfSelection; i++){
-                            System.out.println("Enter Your "+(i+1)+" Selection");
+                            System.out.println("Enter Your Selection "+(i+1));
                             votes[i] = s.nextInt();
                             s.nextLine();
                         }
@@ -137,24 +137,27 @@ public class UI implements Runnable {
         System.out.println(c.getVotingInfo());
         int idex = 0;
         for(String i : c.getVotingOptions()) {
-            System.out.println("Option: "+(idex++)+": "+i);   
+            System.out.println("<"+(idex++)+">"+" Option: "+i);   
         }
 
-        System.out.println(c.getNumOfSelection()+" votes allowed");
+        System.out.println("Only "+c.getNumOfSelection()+" votes allowed");
        
     }
     public void showPolls(){
         int idex = 0;
-        for (Blockchain i : owner.getPolls()) {
-            System.out.println("Poll number-"+(idex++)+": "+i.getVotingInfo());         
+        ArrayList<Blockchain> polls = owner.getPolls();
+        for (Blockchain i : polls) {
+            System.out.println("<"+(idex++)+">"+" Poll: "+i.getVotingInfo());         
         }
     }
     
     public void showPollResult(int selection){
 
         int index = 0;
-        for (String i: owner.getPolls().get(selection).getVotingOptions()) {
-            System.out.println(i+": ["+owner.getPolls().get(selection).getVotes()[index++]+"] votes");    
+        ArrayList<String> options = owner.getPolls().get(selection).getVotingOptions();
+        int [] results = owner.getPolls().get(selection).getVotes();
+        for (String i: options) {
+            System.out.println(i+": ["+results[+index++]+"] votes");    
         }
         
 
