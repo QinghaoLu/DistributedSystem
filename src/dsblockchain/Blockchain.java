@@ -23,8 +23,9 @@ public class Blockchain implements Serializable {
 		
 	}
 	
-	public void addBlock(Block b) {
-		this.blockchain.add(b);
+	public void addBlock(String user,String data,int [] selection) {
+		
+		this.blockchain.add(new Block(user,data,this.blockchain.get(this.blockchain.size()-1).hash,selection));
 		
 	}
 

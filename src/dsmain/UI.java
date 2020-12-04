@@ -78,8 +78,7 @@ public class UI implements Runnable {
                 clear();
                 System.out.println(".............<Current Polls>.............");
                 showPolls();
-                s.nextLine();
-                
+                checkBack();
             }
             
             clear();
@@ -112,5 +111,16 @@ public class UI implements Runnable {
         for (Blockchain i : owner.getPolls()) {
             System.out.println("Poll number-"+(idex++)+": "+i.getVotingInfo());         
         }
+    }
+
+
+    
+    public void checkBack(){
+        while(true){
+            if(s.nextLine().equals("0"))
+                return;
+        }
+        
+
     }
 }
