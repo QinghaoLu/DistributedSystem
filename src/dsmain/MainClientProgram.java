@@ -84,15 +84,19 @@ public class MainClientProgram {
 
 	public ArrayList<Blockchain> getPolls() {
 		updatePeers();
+		// thread pool to getpolls
+		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
+			pool.add(new Thread(new Multicast(peers.get(i),1)));
+		}
+		// wait for threads join
+		for (Thread i : pool) {
 			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				if (peer.getUpdate().size() != 0)
-					me.chains = peer.getUpdate();
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				// e.printStackTrace();
+				i.join();
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
 			}
-
 		}
 		return me.chains;
 	}
@@ -100,23 +104,33 @@ public class MainClientProgram {
 	public void createChain(Blockchain chain) {
 		me.tokens = "WantA";
 		updatePeers();
+		// thread pool to request chain creation
+		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
-			System.out.println(peers.get(i));
+			pool.add(new Thread(new Multicast(peers.get(i),2)));
+		}
+		for (Thread i : pool) {
 			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.requestaddChain(user.name, me.clock.getValue());
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				// e.printStackTrace();
+				i.join();
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
 			}
 		}
+		me.tokens = "Held";
 		getPolls();
 		me.chains.add(chain);
+		
+		ArrayList<Thread> pool2 = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
+			pool2.add(new Thread(new Multicast(peers.get(i),3)));
+		}
+		for (Thread i : pool2) {
 			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.Update(me.chains);
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				// e.printStackTrace();
+				i.join();
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
 			}
 		}
 		me.tokens = "Releasd";
@@ -125,27 +139,35 @@ public class MainClientProgram {
 	public void vote(int chainID, int[] selection) {
 		me.tokens = "WantV" + chainID;
 		updatePeers();
+		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
-			System.out.println(peers.get(i));
+			pool.add(new Thread(new Multicast(peers.get(i),4,chainID)));
+		}
+		for (Thread i : pool) {
 			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.requestVote(chainID, user.name, me.clock.getValue());
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				// e.printStackTrace();
+				i.join();
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
 			}
 		}
 		me.tokens = "Held"+chainID;
 		getPolls();
 		
 		me.chains.get(chainID).addBlock(user.name, user.addr, selection);
-		for (int i = 0; i < peers.size(); i++) {
-			try {
-				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
-				peer.UpdateChain(chainID, me.chains.get(chainID));
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				// e.printStackTrace();
-			}
-		}
+
+		// ArrayList<Thread> pool2 = new ArrayList<Thread>();
+		// for (int i = 0; i < peers.size(); i++) {
+		// 	pool2.add(new Thread(new Multicast(peers.get(i),3)));
+		// }
+		// for (Thread i : pool2) {
+		// 	try {
+		// 		i.join();
+		// 	} catch (InterruptedException e) 
+		// 	{
+		// 		e.printStackTrace();
+		// 	}
+		// }
 		if(user.name.equals("mu")){
 			try {
 			Thread.sleep(10000);
@@ -176,5 +198,75 @@ public class MainClientProgram {
 		
 
 	}
+	public class Multicast implements Runnable{
+		String peerinfo;
+		int function;
+		int chainID;
+		public Multicast(String p,int function){
+			this.peerinfo = p;
+			this.function = function;
+		}
 
+		public Multicast(String p,int function,int chainID){
+			this.peerinfo = p;
+			this.function = function;
+			this.chainID = chainID;
+		}
+
+		@Override
+		public void run() {
+			if(function == 1){
+				updateChain();
+			}
+			else if(function == 2){
+				requestAddChain();
+			}
+			else if(function == 3){
+				update();
+			}
+			else if(function == 4){
+				requestVote();
+			}
+			
+		}
+
+		private void updateChain() {
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
+				if (peer.getUpdate().size() != 0)
+					me.chains = peer.getUpdate();
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				// e.printStackTrace();
+			}
+		}
+
+		private void requestAddChain() {
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
+				peer.requestaddChain(user.name, me.clock.getValue());
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				// e.printStackTrace();
+			}
+		}
+		private void update() {
+			for (int i = 0; i < peers.size(); i++) {
+				try {
+					ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
+					peer.Update(me.chains);
+				} catch (RemoteException | MalformedURLException | NotBoundException e) {
+					// e.printStackTrace();
+				}
+			}
+		}
+		private void requestVote(){
+			System.out.println(peerinfo);
+			try {
+				ClientComInterface peer = (ClientComInterface) Naming.lookup(peers.get(i));
+				peer.requestVote(chainID, user.name, me.clock.getValue());
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+				// e.printStackTrace();
+			}
+		}
+
+	}
 }

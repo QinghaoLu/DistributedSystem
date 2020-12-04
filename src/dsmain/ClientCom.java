@@ -20,11 +20,7 @@ public class ClientCom implements ClientComInterface {
         super();
         // System.out.println(tokens.get(0));
     }
-    // @Override
-    // public ArrayList<Block> getUpdate() {
-
-    // return null;
-    // }
+ 
     @Override
     public void requestVote(Integer ChainId, String name, int clockValue) {
         // try{
