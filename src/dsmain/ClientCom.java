@@ -114,7 +114,19 @@ public class ClientCom implements ClientComInterface {
 
     @Override
     public void Update(ArrayList<Blockchain> chains) throws RemoteException {
-        this.chains = chains;
+        // if(this.chains.size() < chains.size())
+        // this.chains = chains;
+        if(this.chains.size() < chains.size()){
+            for(int i = this.chains.size()-1; i < chains.size(); i++){
+                this.chains.add(chains.get(i));
+            }
+        }
+        for (int i = 0; i < this.chains.size(); i++) {
+            if(this.chains.get(i).getBlockchain().size() < chains.get(i).getBlockchain().size()){
+                this.chains.set(i, chains.get(i));
+            }    
+        }
+        
 
     }
 

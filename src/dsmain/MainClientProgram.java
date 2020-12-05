@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import dsblockchain.Block;
 import dsblockchain.Blockchain;
 import dsserver.directoryInterface;
 
@@ -123,19 +124,19 @@ public class MainClientProgram {
 		getPolls();
 		me.chains.add(chain);
 		
-		ArrayList<Thread> pool2 = new ArrayList<Thread>();
-		for (int i = 0; i < peers.size(); i++) {
-			pool2.add(new Thread(new Multicast(peers.get(i),3)));
-			pool2.get(i).start();
-		}
-		for (Thread i : pool2) {
-			try {
-				i.join();
-			} catch (InterruptedException e) 
-			{
-				e.printStackTrace();
-			}
-		}
+		// ArrayList<Thread> pool2 = new ArrayList<Thread>();
+		// for (int i = 0; i < peers.size(); i++) {
+		// 	pool2.add(new Thread(new Multicast(peers.get(i),3)));
+		// 	pool2.get(i).start();
+		// }
+		// for (Thread i : pool2) {
+		// 	try {
+		// 		i.join();
+		// 	} catch (InterruptedException e) 
+		// 	{
+		// 		e.printStackTrace();
+		// 	}
+		// }
 		me.tokens = "Releasd";
 	}
 
@@ -160,26 +161,26 @@ public class MainClientProgram {
 		
 		me.chains.get(chainID).addBlock(user.name, user.addr, selection);
 
-		ArrayList<Thread> pool2 = new ArrayList<Thread>();
-		for (int i = 0; i < peers.size(); i++) {
-			pool2.add(new Thread(new Multicast(peers.get(i),3)));
-			pool2.get(i).start();
-		}
-		for (Thread i : pool2) {
-			try {
-				i.join();
-			} catch (InterruptedException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-		if(user.name.equals("mu")){
-			try {
-			Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		// ArrayList<Thread> pool2 = new ArrayList<Thread>();
+		// for (int i = 0; i < peers.size(); i++) {
+		// 	pool2.add(new Thread(new Multicast(peers.get(i),3)));
+		// 	pool2.get(i).start();
+		// }
+		// for (Thread i : pool2) {
+		// 	try {
+		// 		i.join();
+		// 	} catch (InterruptedException e) 
+		// 	{
+		// 		e.printStackTrace();
+		// 	}
+		// }
+		// if(user.name.equals("mu")){
+		// 	try {
+		// 	Thread.sleep(10000);
+		// 	} catch (InterruptedException e) {
+		// 		e.printStackTrace();
+		// 	}
+		// }
 		
 		me.tokens = "Releasd";
 
@@ -234,18 +235,31 @@ public class MainClientProgram {
 			}
 			
 		}
-
+		// 1
 		private void updateChain() {
 			try {
 				// System.out.println(peerinfo);
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
-				if (peer.getUpdate().size() != 0)
-					me.chains = peer.getUpdate();
+				if (peer.getUpdate().size() != 0){
+					ArrayList<Blockchain> temp = new ArrayList<Blockchain>();
+					temp = peer.getUpdate();
+
+					if(me.chains.size() < temp.size()){
+						for(int i = me.chains.size()-1; i < temp.size(); i++){
+							me.chains.add(temp.get(i));
+						}
+					}
+					for (int i = 0; i < temp.size(); i++) {
+						if(me.chains.get(i).getBlockchain().size() < temp.get(i).getBlockchain().size()){
+							me.chains.set(i, temp.get(i));
+						}    
+					}
+				}
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				// e.printStackTrace();
 			}
 		}
-
+		// 2
 		private void requestAddChain() {
 			try {
 				ClientComInterface peer = (ClientComInterface) Naming.lookup(peerinfo);
@@ -254,6 +268,7 @@ public class MainClientProgram {
 				// e.printStackTrace();
 			}
 		}
+		// 3
 		private void update() {
 			for (int i = 0; i < peers.size(); i++) {
 				try {
@@ -264,6 +279,7 @@ public class MainClientProgram {
 				}
 			}
 		}
+		// 4
 		private void requestVote(){
 			System.out.println(peerinfo);
 			try {
