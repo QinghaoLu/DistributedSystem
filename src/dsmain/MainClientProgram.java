@@ -243,17 +243,23 @@ public class MainClientProgram {
 				if (peer.getUpdate().size() != 0){
 					ArrayList<Blockchain> temp = new ArrayList<Blockchain>();
 					temp = peer.getUpdate();
-
-					if(me.chains.size() < temp.size()){
-						for(int i = me.chains.size()-1; i < temp.size(); i++){
-							me.chains.add(temp.get(i));
+					if(me.chains.size() == 0){
+						me.chains= temp;
+					}
+					else{
+						if(me.chains.size() < temp.size()){
+							for(int i = me.chains.size(); i < temp.size(); i++){
+								me.chains.add(temp.get(i));
+							}
+						}
+						for (int i = 0; i < temp.size(); i++) {
+							if(me.chains.get(i).getBlockchain().size() < temp.get(i).getBlockchain().size()){
+								me.chains.set(i, temp.get(i));
+							}    
 						}
 					}
-					for (int i = 0; i < temp.size(); i++) {
-						if(me.chains.get(i).getBlockchain().size() < temp.get(i).getBlockchain().size()){
-							me.chains.set(i, temp.get(i));
-						}    
-					}
+					
+					
 				}
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				// e.printStackTrace();
