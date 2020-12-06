@@ -17,9 +17,9 @@ public class directoryImp implements directoryInterface{
 	
 	protected directoryImp(String string) throws RemoteException{
 		super();
-		for(int i = 10000; i < 20001; i++){
-			users.add(new UserInfo("tester"+i,"123","abc/192.168.0.64",String.valueOf(i)));
-		}
+		// for(int i = 10000; i < 20001; i++){
+		// 	users.add(new UserInfo("tester"+i,"123","abc/192.168.0.64",String.valueOf(i)));
+		// }
 	}
 
 	@Override
