@@ -253,7 +253,7 @@ public class MainClientProgram {
 							}
 						}
 						for (int i = 0; i < temp.size(); i++) {
-							if(me.chains.get(i).getBlockchain().size() < temp.get(i).getBlockchain().size()){
+							if((me.chains.get(i).getBlockchain().size() < temp.get(i).getBlockchain().size()) && me.chains.get(i).getBlockchain().get(me.chains.get(i).getBlockchain().size()-1).equals(temp.get(i).getBlockchain().get(me.chains.get(i).getBlockchain().size()-1))){
 								me.chains.set(i, temp.get(i));
 							}    
 						}
