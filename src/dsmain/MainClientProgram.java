@@ -200,7 +200,7 @@ public class MainClientProgram {
 		if(user != null)
 			new MainClientProgram(user,scanner);
 		
-
+		scanner.close();
 		
 
 	}

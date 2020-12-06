@@ -130,10 +130,10 @@ public class ClientCom implements ClientComInterface {
 
     }
 
-    @Override
-    public void UpdateChain(int chainId, Blockchain chain) throws RemoteException {
-        this.chains.set(chainId, chain);
-    }
+    // @Override
+    // public void UpdateChain(int chainId, Blockchain chain) throws RemoteException {
+    //     this.chains.set(chainId, chain);
+    // }
 
     
     
