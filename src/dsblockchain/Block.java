@@ -1,7 +1,5 @@
 package dsblockchain;
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Block implements Serializable{

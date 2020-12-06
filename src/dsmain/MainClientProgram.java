@@ -12,14 +12,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Random;
+
 import java.util.Scanner;
 
-import dsblockchain.Block;
+
 import dsblockchain.Blockchain;
 import dsserver.directoryInterface;
 
-// import dsblockchain.Block;
+
 
 public class MainClientProgram {
 

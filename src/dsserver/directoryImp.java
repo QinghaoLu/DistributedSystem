@@ -16,13 +16,14 @@ public class directoryImp implements directoryInterface{
 	ArrayList<UserInfo> users=new ArrayList<UserInfo>();
 	
 	protected directoryImp(String string) throws RemoteException{
-		// TODO Auto-generated constructor stub
 		super();
+		for(int i = 10000; i < 20001; i++){
+			users.add(new UserInfo("tester"+i,"123","abc/192.168.0.64",String.valueOf(i)));
+		}
 	}
 
 	@Override
 	public boolean registerfunc(String name, String passwd, String ipaddr, String portNum) throws RemoteException {
-		// TODO Auto-generated method stub
 		for(int i=0;i<users.size();i++)//check if user exist
 		{
 			if(users.get(i).name.equals(name)) {
