@@ -180,13 +180,15 @@ public class MainClientProgram {
 		// 		e.printStackTrace();
 		// 	}
 		// }
-		if(user.name.equals("mu")){
-			try {
-			Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+
+		// .............................TEST.............................
+		// if(user.name.equals("mu")){
+		// 	try {
+		// 	Thread.sleep(10000);
+		// 	} catch (InterruptedException e) {
+		// 		e.printStackTrace();
+		// 	}
+		// }
 		
 		me.tokens = "Releasd";
 
