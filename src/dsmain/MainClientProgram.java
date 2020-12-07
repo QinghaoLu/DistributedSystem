@@ -105,22 +105,28 @@ public class MainClientProgram {
 
 	public void createChain(Blockchain chain) {
 		me.tokens = "WantA";
+		long start = System.currentTimeMillis();
 		updatePeers();
 		// thread pool to request chain creation
+		int count = 0;
 		ArrayList<Thread> pool = new ArrayList<Thread>();
 		for (int i = 0; i < peers.size(); i++) {
 			pool.add(new Thread(new Multicast(peers.get(i),2)));
 			pool.get(i).start();
+			
 		}
 		for (Thread i : pool) {
 			try {
 				i.join();
+				count++;
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
 		}
 		me.tokens = "Held";
+		long end = System.currentTimeMillis();
+		System.out.println(count+" calls were made. Total Duration of "+(end-start)+" ms");
 		getPolls();
 		me.chains.add(chain);
 		
@@ -174,13 +180,13 @@ public class MainClientProgram {
 		// 		e.printStackTrace();
 		// 	}
 		// }
-		// if(user.name.equals("mu")){
-		// 	try {
-		// 	Thread.sleep(10000);
-		// 	} catch (InterruptedException e) {
-		// 		e.printStackTrace();
-		// 	}
-		// }
+		if(user.name.equals("mu")){
+			try {
+			Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		me.tokens = "Releasd";
 

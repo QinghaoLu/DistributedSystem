@@ -24,10 +24,10 @@ public class ClientCom implements ClientComInterface {
     @Override
     public void requestVote(Integer ChainId, String name, int clockValue) {
         // try{
-        if ((tokens.equals("WantV"+ChainId) && clock.getValue() > clockValue) || tokens.equals("Held"+ChainId)) {
+        if ((tokens.equals("WantV"+ChainId) && clock.getValue() < clockValue) || tokens.equals("Held"+ChainId)) {
 
             Quene.add(name);
-            while ((tokens.equals("WantV"+ChainId) && clock.getValue() > clockValue)
+            while ((tokens.equals("WantV"+ChainId) && clock.getValue() < clockValue)
                     || tokens.equals("Held"+ChainId)) {
                 System.out.println(name+" Wants to vote I'm "+tokens);
                 try {
