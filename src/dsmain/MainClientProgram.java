@@ -43,6 +43,7 @@ public class MainClientProgram {
 			reg.bind(user.name, com);
 
 			System.out.println("Online connecting to Dserver...");
+			//.........................................Directory server Address Here....................................../
 			dserver = (directoryInterface) Naming.lookup("//192.168.0.31:5555/directoryInterface");
 			try {
 				Thread t = new Thread(new UI(this));
